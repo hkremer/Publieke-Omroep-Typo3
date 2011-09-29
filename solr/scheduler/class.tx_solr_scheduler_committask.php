@@ -70,15 +70,15 @@ class tx_solr_scheduler_CommitTask extends tx_scheduler_Task {
 		if (is_null($this->solr)) {
 			$this->initializeSolr();
 		}
-
+		
 		$response = $this->solr->commit();
 		if ($response->responseHeader->status === 0) {
 			$result = TRUE;
-		}
-
+		} 
+		
 		return $result;
 	}
-
+	
 	/**
 	 * This method is designed to return some additional information about the task,
 	 * that may help to set it apart from other tasks from the same class

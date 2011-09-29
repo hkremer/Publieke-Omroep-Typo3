@@ -191,6 +191,8 @@ class tx_solr_SolrService extends Apache_Solr_Service {
 	 * @return	Apache_Solr_Response	Solr response
 	 */
 	public function search($query, $offset = 0, $limit = 10, $params = array()) {
+
+
 		$response = parent::search($query, $offset, $limit, $params);
 		$this->hasSearched = TRUE;
 
@@ -395,6 +397,19 @@ class tx_solr_SolrService extends Apache_Solr_Service {
 			$solrconfigXmlUrl = $this->_scheme . '://'
 			. $this->_host . ':' . $this->_port
 			. $this->_path . 'admin/file/?file=solrconfig.xml';
+
+
+
+                // Proxy settings
+     		if ($proxyServer = parse_url($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+
+$r_default_context = stream_context_create();
+			if ($proxyServer['host'] && $proxyServer['port']) {
+				stream_context_set_option($r_default_context, 'http', 'proxy', $proxyServer['host'] . ":". $proxyServer['port']."/");
+				stream_context_set_option($r_default_context, 'http', 'request_fulluri', true);
+			}
+			libxml_set_streams_context($r_default_context);
+		}
 
 			$solrconfigXml = simplexml_load_file($solrconfigXmlUrl);
 			$this->solrconfigName = (string) $solrconfigXml->attributes()->name;

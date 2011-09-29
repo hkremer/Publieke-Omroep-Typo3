@@ -551,7 +551,7 @@ class tx_solr_Query {
 		$queryParameters = array_merge(
 			array(
 				'fl' => implode(',', $this->returnFields),
-				'fq' => $this->filters
+				//'fq' => $this->filters
 			),
 			$this->queryParameters
 		);

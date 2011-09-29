@@ -78,7 +78,7 @@ class tx_solr_Search implements t3lib_Singleton {
 			// * obey the debug setting
 
 		$this->query = $query;
-
+		
 		try {
 			$response = $this->solr->search(
 				$query->getQueryString(),

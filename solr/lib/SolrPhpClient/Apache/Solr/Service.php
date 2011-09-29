@@ -307,6 +307,7 @@ class Apache_Solr_Service
 		$this->_searchUrl = $this->_constructUrl(self::SEARCH_SERVLET);
 		$this->_threadsUrl = $this->_constructUrl(self::THREADS_SERVLET, array('wt' => self::SOLR_WRITER ));
 		$this->_updateUrl = $this->_constructUrl(self::UPDATE_SERVLET, array('wt' => self::SOLR_WRITER ));
+		//$this->_updateUrl = $this->_constructUrl(self::UPDATE_SERVLET);
 
 		$this->_urlsInited = true;
 	}
@@ -360,10 +361,18 @@ class Apache_Solr_Service
 			// use the default timeout pulled from default_socket_timeout otherwise
 			stream_context_set_option($this->_getContext, 'http', 'timeout', $this->_defaultTimeout);
 		}
-
+		// Proxy settings
+     		if ($proxyServer = parse_url($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+			if ($proxyServer['host'] && $proxyServer['port']) {
+				stream_context_set_option($this->_getContext, 'http', 'proxy', $proxyServer['host'] . ":". $proxyServer['port']."/");
+				stream_context_set_option($this->_getContext, 'http', 'request_fulluri', true);
+			}
+		}
+		
 		// $http_response_header will be updated by the call to file_get_contents later
 		// see http://us.php.net/manual/en/wrappers.http.php for documentation
 		// Unfortunately, it will still create a notice in analyzers if we don't set it here
+               
 		$http_response_header = null;
 
 		$response = new Apache_Solr_Response(@file_get_contents($url, false, $this->_getContext), $http_response_header, $this->_createDocuments, $this->_collapseSingleValueArrays);
@@ -404,7 +413,6 @@ class Apache_Solr_Service
 				)
 			)
 		);
-
 		// set the timeout if specified
 		if ($timeout !== FALSE && $timeout > 0.0)
 		{
@@ -415,13 +423,24 @@ class Apache_Solr_Service
 			stream_context_set_option($this->_postContext, 'http', 'timeout', $timeout);
 		}
 
+		// Proxy settings
+     		if ($proxyServer = parse_url($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+			if ($proxyServer['host'] && $proxyServer['port']) {
+				stream_context_set_option($this->_postContext, 'http', 'proxy', $proxyServer['host'] . ":". $proxyServer['port']."/");
+				stream_context_set_option($this->_postContext, 'http', 'request_fulluri', true);
+			}
+		}
+
 		// $http_response_header will be updated by the call to file_get_contents later
 		// see http://us.php.net/manual/en/wrappers.http.php for documentation
 		// Unfortunately, it will still create a notice in analyzers if we don't set it here
 		$http_response_header = null;
 
+		//$url = $url . "?commit=true -H \"Content-Type: text/xml\" --data-binary '". $rawPost . "'";
 		$response = new Apache_Solr_Response(@file_get_contents($url, false, $this->_postContext), $http_response_header, $this->_createDocuments, $this->_collapseSingleValueArrays);
 
+//var_dump("Response:" . file_get_contents($url, false, $this->_postContext));
+//exit; 
 		if ($response->getHttpStatus() != 200)
 		{
 			throw new Apache_Solr_HttpTransportException($response);
@@ -675,10 +694,20 @@ class Apache_Solr_Service
 			array(
 				'http' => array(
 					'method' => 'GET',
-					'timeout' => $timeout
+					'timeout' => $timeout,
+					'proxy' => "tcp://www.host.nl:80/",
+					'request_fulluri' => true
 				)
 			)
-		);
+		);		
+
+		// Proxy settings
+     		if ($proxyServer = parse_url($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
+			if ($proxyServer['host'] && $proxyServer['port']) {
+				stream_context_set_option($context, 'http', 'proxy', $proxyServer['host'] . ":". $proxyServer['port']."/");
+				stream_context_set_option($context, 'http', 'request_fulluri', true);
+			}
+		}
 
 		// attempt a GET request to the solr ping page
 		$ping = @file_get_contents($this->_pingUrl, false, $context);
@@ -688,6 +717,7 @@ class Apache_Solr_Service
 		if ($ping !== false)
 		{
 			return microtime(true) - $start;
+
 		}
 		else
 		{

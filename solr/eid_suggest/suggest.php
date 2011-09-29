@@ -67,6 +67,7 @@ if ($search->ping()) {
 	}
 
 	$results = json_decode($search->search($suggestQuery, 0, 0)->getRawResponse());
+
 	$facetSuggestions = $results->facet_counts->facet_fields->{$solrConfiguration['suggest.']['suggestField']};
 	$facetSuggestions = get_object_vars($facetSuggestions);
 
