@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rexpfd>
+    <destination path="jupiter.search.dkd.de:/var/customers/webs/search/htdocs_public/typo3conf/ext/solr"/>
+    <options createDirectoryStructure="false" createSelectedOnly="true" descriptionFilePath="/EXT solr - public/solr2search-dkd-de.rexpfd" overWriteExistingFiles="true" reviewSynchronize="false" saveSettings="true"/>
+    <selectedElements>
+        <file path="/EXT solr - public/ChangeLog"/>
+        <file path="/EXT solr - public/ext_autoload.php"/>
+        <file path="/EXT solr - public/ext_emconf.php"/>
+        <file path="/EXT solr - public/ext_icon.gif"/>
+        <file path="/EXT solr - public/ext_localconf.php"/>
+        <file path="/EXT solr - public/ext_tables.php"/>
+        <file path="/EXT solr - public/locallang.xml"/>
+        <file path="/EXT solr - public/locallang_db.xml"/>
+        <folder path="/EXT solr - public/classes"/>
+        <folder path="/EXT solr - public/compat"/>
+        <folder path="/EXT solr - public/doc"/>
+        <folder path="/EXT solr - public/eid_suggest"/>
+        <folder path="/EXT solr - public/flexforms"/>
+        <folder path="/EXT solr - public/interfaces"/>
+        <folder path="/EXT solr - public/lang"/>
+        <folder path="/EXT solr - public/lib"/>
+        <folder path="/EXT solr - public/mod_admin"/>
+        <folder path="/EXT solr - public/pi_results"/>
+        <folder path="/EXT solr - public/pi_search"/>
+        <folder path="/EXT solr - public/report"/>
+        <folder path="/EXT solr - public/resources"/>
+        <folder path="/EXT solr - public/scheduler"/>
+        <folder path="/EXT solr - public/static"/>
+        <folder path="/EXT solr - public/tests"/>
+    </selectedElements>
+</rexpfd>

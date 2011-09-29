@@ -1,0 +1,278 @@
+
+plugin.tx_solr {
+
+	enabled = 1
+
+	solr {
+		scheme = {$plugin.tx_solr.solr.scheme}
+		host = {$plugin.tx_solr.solr.host}
+		port = {$plugin.tx_solr.solr.port}
+		path = {$plugin.tx_solr.solr.path}
+	}
+
+	templateFile {
+		results = EXT:solr/resources/templates/pi_results/results.htm
+		search = EXT:solr/resources/templates/pi_search/search.htm
+	}
+
+	addDefaultCss = 1
+	addDefaultJs = 1
+
+	enableDebugMode = 0
+
+	general {
+		dateFormat.date = d.m.Y H:i
+	}
+
+	index {
+		enablePageIndexing = 1
+		enableIndexingWhileBeUserLoggedIn = 1
+
+		additionalFields {
+
+		}
+
+			// assigns processing instructions to Solr fields during indexing, Solr field = processing instruction
+		fieldProcessingInstructions {
+			changed = timestampToIsoDate
+			created = timestampToIsoDate
+			endtime = timestampToIsoDate
+		}
+	}
+
+	search {
+		# TODO: move filter into query{}
+		filter =
+
+		targetPage = 0
+
+		allowEmptyQuery = 0
+
+		query {
+			fields = content^40.0, title^5.0, keywords^2.0, tagsH1^5.0, tagsH2H3^3.0, tagsH4H5H6^2.0, tagsInline^1.0
+
+			# see http://wiki.apache.org/solr/DisMaxRequestHandler#mm_.28Minimum_.27Should.27_Match.29
+			minimumMatch =
+
+			# see http://wiki.apache.org/solr/DisMaxRequestHandler#bf_.28Boost_Functions.29
+			boostFunction =
+
+			# see http://wiki.apache.org/solr/DisMaxQParserPlugin#bq_.28Boost_Query.29
+			boostQuery =
+
+			// TODO implement multiple filters
+#			filter {
+#				10 = x:y
+#				20 = a:b
+#			}
+		}
+
+		# TODO make it a top level configuration section
+		results {
+			resultsPerPage = {$plugin.tx_solr.search.results.resultsPerPage}
+			resultsPerPageSwitchOptions = 10, 20, 30, 50
+
+			# fieldname => processing instruction, available instructions: timestamp, utf8Decode, skip (removes the field from the result)
+			fieldProcessingInstructions {
+				title = utf8Decode
+				content = utf8Decode
+				changed = timestamp
+				created = timestamp
+				indexed = timestamp
+				# TODO rename the skip instruction to remove?!
+				spell = skip
+			}
+
+			fieldRenderingInstructions {
+
+				# additional example rendering instruction for the title field
+				title2 = TEXT
+				title2 {
+					field = title
+					case = upper
+					wrap = <span class="title">|</span>
+				}
+
+				url = TEXT
+				url {
+					field = url
+					htmlSpecialChars = 1
+					htmlSpecialChars.preserveEntities = 1
+				}
+
+				link = CASE
+				link {
+					key.field = type
+
+					pages  = TEXT
+					pages {
+						field = title
+
+						typolink {
+							parameter.field = uid
+						}
+					}
+
+					default  = TEXT
+					default {
+						field = title
+
+						typolink {
+							parameter.field = url
+							extTarget =
+						}
+					}
+				}
+			}
+
+			pagebrowser {
+				# TODO move to top level templateFile options
+				templateFile = EXT:solr/resources/templates/pi_results/pagebrowser.htm
+			}
+
+			ignorePageBrowser = 0
+		}
+
+		highlighting = 0
+		highlighting {
+				# title and content are set as default in solrconfig.xml already
+#			highlightFields = title,content
+			fragmentSize = 200
+
+			wrap = <span class="results-highlight">|</span>
+		}
+
+		spellchecking = 0
+		spellchecking {
+			wrap = |<div class="spelling-suggestions">###LLL:didYouMean### |</div>|
+		}
+
+		sorting = 0
+		sorting {
+			defaultOrder = asc
+
+			fields {
+				relevancy = 1
+				relevancy {
+					label = sorting_relevancy
+				}
+
+				sortTitle = 1
+				sortTitle {
+					label = sorting_title
+				}
+
+				type = 1
+				type {
+					label = sorting_type
+				}
+
+				sortAuthor = 0
+				sortAuthor {
+					label = sorting_author
+				}
+
+				created = 1
+				created {
+					label = sorting_created
+				}
+			}
+		}
+
+		faceting = 0
+		faceting {
+			minimumCount = 1
+			sortBy = count
+			limit = 10
+			singleFacetMode = 0
+			showEmptyFacets = 1
+
+			facetOrder = type, author
+			facets {
+				type {
+					label = Content Type
+					field = type
+					missing = 0
+				}
+
+				author {
+					label = Author
+					field = sortAuthor
+				}
+
+/* Not implemented yet
+				lastChanged {
+					label = Last Changed
+					date =
+				}
+
+				feuser {
+					label = Created by FE User
+					query =
+
+					 TODO
+					renderingInstruction = TEXT
+					renderingInstruction {
+						wrap = <span class="user-{uid}">|</span>
+						insertData = 1
+					}
+
+				}
+*/
+			}
+
+				// available place holders: @facetValue, @facetName, @facetText
+			removeFacetLinkText = @facetText (remove)
+
+			showAllLink.wrap = <li>|</li>
+		}
+	}
+
+	suggest = 0
+	suggest {
+		loadJQuery = 1
+
+		numberOfSuggestions = 10
+		suggestField = spell
+		forceHttps = 0
+
+		stylesheet = EXT:solr/resources/css/jquery-ui/jquery-ui.custom.css
+
+		javaScriptFiles {
+			library = EXT:solr/resources/javascript/jquery-1.4.2.min.js
+			ui      = EXT:solr/resources/javascript/jquery-ui-1.8.9.custom.min.js
+			suggest = EXT:solr/resources/javascript/eid_suggest/suggest.js
+		}
+	}
+
+	viewhelpers {
+		crop {
+			maxLength = 30
+			cropIndicator = ...
+		}
+	}
+
+	logging {
+		exceptions = 1
+
+			// TODO change "indexing" to enable all indexing logging, split up into several options
+		indexing = 0
+		indexing {
+			missingTypo3SearchMarkers = 1
+		}
+
+		query {
+			filters = 0
+			searchWords = 0
+			queryString = 0
+			rawPost = 0
+			rawGet = 0
+		}
+
+		scheduler {
+				// TODO add logging to the optimize task
+			optimize = 0
+		}
+	}
+}
+

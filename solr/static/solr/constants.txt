@@ -1,0 +1,16 @@
+
+plugin.tx_solr {
+
+	solr {
+		scheme = http
+		host = localhost
+		port = 8080
+		path = /solr/
+	}
+
+	search {
+		results {
+			resultsPerPage = 10
+		}
+	}
+}

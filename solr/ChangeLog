@@ -1,0 +1,422 @@
+2011-02-22  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added tx_solr_AdditionalFieldsIndexer to take care of indexing fields as defined in plugin.tx_solr.index.additionalFields
+	* Removed unused method tx_solr_Typo3Environment::isFileadminEnabledWhileUsingDam()
+	* Added refactored indexer
+	* Added utility method tx_solr_Util::getRootPageId()
+	* Added a way to register additional plugin commands
+	* Renamed tx_solr_Command interface to tx_solr_PluginCommand
+	* Changed the command resolver to support loading commands registered through registerPluginCommand()
+	* Added a plugin that provides a search input field, credits Timo Schmidt
+	* Fixed issue #12543: Facets links "Show more" not working (results page), credits Pierrick Caillon
+	* Added support to replace the core search content element with the EXT:solr search plugin
+	* Fixed issue #13141: Can't use devLog when an exception involing tx_solr_query is logged, credits Pierrick Caillon
+	* Fixed issue #10665, changed handling of multiple word queries, escpaes phrases only when quotes are found at the beginning and end of a query
+	* Added support for boost query bq parameter
+	* Fixed issue #9971: suggest ignores search.filter
+	* !!! Changed interface tx_solr_FacetsModifier and moved the corresponding hook from tx_solr_pi_results_FacetingCommand to tx_solr_Search
+	* Added a check for Solr responses and throwing an exception if no response could be received, credits Marcus Krause
+	* Changed inclusion of Javascript and Stylesheets in tx_solr_pi_results_FormCommand
+	* Added feature #10898: Option to create normal links with getResultsPerPageSwitch, credits David Rühr
+	* Updated jQuery UI icons
+	* Removed option to switch between simple and advanced form
+	* Added a new "virtual" link marker added through renderingInstructions (###RESULT_DOCUMENT.LINK###)
+	* Added labels for danish, french, japanese, korean, chinese languages, credits Claus Due, Pierrick Caillon, Michael Voehringer
+
+2011-02-21  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added file meta data fields to schema.xml
+	* Changed the flash message for failed connections in the index report to show the server connection's parameters
+	* Changed the schema status check to check for the current schema version
+	* Added a configuration check status
+	* Changed the Solr status check to only show the complete version number, if it is different from the short version number, this is the case with custom builds
+	* Added a PHP port of the Acccess Rootline
+	* Added refactored facet renderer architecture to allow custom facet renderers
+	* Added support for multi / single value field auto-detection in field processors
+	* Added refactored structure for query filter parsers and query modifiers
+	* Added support for subpart viewhelpers
+	* Added a facet subpart viewhelper to render single facets independently from the regular facet list
+	* Added tx_solr_Typo3PageContentExtractor::getTagContent()
+	* Fixed issue #7362: nbsp are not detected to split words
+
+2011-01-31  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Removed preset font family
+	* Removed rounded corners from the autocomplete box
+
+2011-01-28  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Updated jQuery UI to 1.8.9
+	* Refactored provided jQuery UI JavaScript files and stylesheets
+
+2011-01-26  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Changed schema, remove the ISOLatin mapping from the schema after problems with umlauts
+
+2011-01-26  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Fixed bug #10668: Queries that don't return any results cause rendering of JavaScript code inside of the suggestion box
+
+2011-01-20  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Fixed issue where xclass declaration of tslib_cObj produce fatal php errors in backend mode.
+
+2010-11-29  Markus Goldbach <markus.goldbach@dkd.de>
+
+	* Added Tomcat configuration to setup UTF-8 URL support and bind Tomcat to localhost for security reason
+	* Changed install script to deploy the Tomcat configuration
+
+2010-11-29  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #9808: Plugin does not work when on a mounted page
+	* Changed autowarmCount for solr.FastLRUCache in solrconfig.xml for better performance of newly opened searchers
+
+2010-11-24  Markus Goldbach <markus.goldbach@dkd.de>
+
+	* Changed Schema, remove ISOLatin mapping from type textSpell, after problems with umlauts in suggestion
+
+2010-11-23  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a parameter to the constructor of tx_solr_Search to explicitly set the tx_solr_SolrService connection to use when searching
+	* Moved logging modifications from the SolrPhpClient library to its subclass tx_solr_SolrService
+
+2010-10-12  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Finally removed whitespace from the start of a single word suggestion
+
+2010-10-08  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Added missing translations for dutch, credits Bart Gijswijt
+
+2010-10-08  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #10165 - Phrase queries not working as quotes are escaped in Solr queries
+
+2010-10-06  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed a missing hook registration resulting in user groups not being tracked and thus making protected results publicly visible
+	* Added a marker displaying the result document ID to the default template
+
+2010-10-06  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Removed whitespace from the start of a single word suggestion
+	* Fixed issue #9208: autocomplete does not work when choosing term using the mouse, credits Michiel Roos
+	* Fixed the path to ui-anim_basic_16x16.gif
+
+2010-10-04  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed page content extractor to remove javascript tags and their content, credits Markus Kleinhenz
+
+2010-09-30  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed a missing class in ext_autoload.php
+	* Fixed branch definition for the install script
+	* Fixed status report check for current schema.xml
+
+2010-09-29  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Release of v1.2.0
+
+	* Moved the Access Filter Plugin from resources/solr/ to resources/solr/plugins/
+	* Updated Access Filter Plugin to version 1.1.0, brings extended access check support
+	* Changed the install Solr script to get the access filter from the new location
+	* Changed the Access Filter Plugin status report to use Solr's plugin information request handler
+	* Updated schema.xml version to "link" it to the 1.5.0 version of the extension
+	* Changed schema.xml access field default value to "c:0"
+	* Added a report status to check whether the used solrconfig.xml is current
+	* Added information about solrconfig.xml and Access Filter Plugin versions to the Solr status report status
+	* Moved getLinkTargetPageId() from tx_solr_pi_results to tx_solr_pluginbase_PluginBase
+	* Fixed the Solr index menu in the index report
+
+2010-09-15  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed version number to 1.2.0-preview
+	* Changed directory for TYPO3 Solr plugins in solrconfig.xml
+
+2010-09-15  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Changed install script to install the Solr Access Filter Plugin
+	* Added Solr Access Filter Plugin to libs in solrconfig.xml
+	* Changed path to libs in solrconfig.xml
+	* Changed install script exclude Solr Access Filter Plugin Version number to variable
+
+2010-09-14  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a method to call arbitrary servlets to tx_solr_SolrService
+	* Changed the link viewhelper to handle the target argument in different ways
+	* Added "alpha" and "lex" as aliases for "index" to the facet sorting option
+	* Added support for conditions in templates
+	* Changed tx_solr_Template to tolerate if viewhelpers could not be loaded
+	* Added support for named loops in tx_solr_Template
+	* Added support for conditions in loops
+	* Changed tx_solr_Template to accept markers in whatver notation
+	* Added tx_solr_Util::lcfirst()
+	* Added tx_solr_Util::getSolrConfigurationFromPageId() and tx_solr_Util::initializeTsfe()
+	* Added base classes for plugins
+	* Removed the backend module for now, didn't do anything anyways
+	* Changed the default template to show more features by default
+	* Changed the default highlighting wrap to use a CSS class instead of a style attribute
+	* Added EXT:crawler support
+	* Added an option to enable query debug mode
+	* Added an option to set allowEmptyQuery via TypoScript
+	* Changed the results plugin by refactoring to use the tx_solr_pluginbase_CommandPluginBase class, credits Timo Schmidt
+	* Added new interfaces to extend the functionality of EXT:solr
+	* Changed the form command: added new markers, enforced implementation of form modifier interface
+	* Changed the sorting command to only execute when activated through TypoScript
+	* Changed the results command: added new markers, added new hooks
+	* Changed the faceting command to use urlen/decode() for filter parmeters instead of json
+	* Changed the faceting command to only execute when activated through TypoScript
+	* Added facet option "selectingSelectedFacetOptionRemovesFilter"
+	* Added facet option "operator"
+	* Added faceting option "singleFacetMode"
+
+2010-09-14  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Changed solrconfig.xml deactivating dataDir
+
+2010-09-13  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a content extraction class for TYPO3 pages
+	* Changed the indexer to use the content extractor introduced before
+	* Changed SolrPhpClient library to be in sync with r38 at http://code.google.com/p/solr-php-client/
+	* Added a field processor service and an actual timestamp to ISO date field processor
+	* Changed the indexer to use the field processor service
+	* Changed how the frontend indexer checks whether indexing is enabled
+	* Changed interfaces tx_solr_AdditionalIndexer and tx_solr_SubstitutePageIndexer to accept documents currently being indexed
+	* Added the Solr Access Filter Plugin
+	* Changed the schema.xml introducing the new access field for use with the Solr Access Filter Plugin
+	* Changed the indexer to use the new access field
+	* Changed the query class to generate an access filter for the new Solr plugin
+	* Changed solrconfig.xml to load the Access Filter Plugin
+	* Added a status report to check whether the Solr Access Filter plugin is installed
+	* Added tx_solr_NoSolrConnectionFoundException for cases when the connection manager can not find a Solr connection
+	* Changed the connection manager to find connections more reliably
+
+2010-09-10  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Changed install script, check if all required packages are installed, update Tomcat to 6.0.29 and rename Tomcat directory to simplify updates, credits Michel Tremblay
+
+2010-08-30  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #9481: viewhelper CurrentResultNumber doesn't respect selected number, credits Rik Willems
+
+2010-08-25  Markus Goldbach <markus.goldbach@dkd.de>
+
+	* Added ISOLatin mapping to schema.xml
+
+2010-08-13  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed an issue where 0 was not accepted for the minimumMatch TypoScript parameter
+	* Added setting of Solr parameter echoParams=all when enabling debugMode
+
+2010-08-04  Markus Godlbach  <markus.goldbach@dkd.de>
+
+	* Added a hook and interface to modify facets before rendering them
+
+2010-08-02  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added an option to completely en/disable EXT:solr - Useful for multi site installation where you want to enable EXT:solr for some sites only
+
+2010-07-29  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed utf-8 encoding for dynamic string and text fields added through TypoScript configuration in the frontend indexer
+
+2010-07-28  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added method tx_solr_SolrService::deleteByType()
+
+2010-07-28  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* !!! Fixed issue #7698: Upgrade auto suggest to use jQuery UI 1.8
+	* !!! Upgraded to jQuery 1.4.2
+	* Added configuration options to change javascript files and stylesheets used by suggestions
+
+2010-07-27  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a way to disable / reset the minimum match mm query parameter
+	* Added support for the boost function parameter (bf). Can be set through API tx_solr_Query->setBoostFunction(), TypoScript, and Flexform
+
+2010-07-22  Stefan Sprenger  <stefan.sprenger@dkd.de>
+
+	* Fixed issue #6253: Result links must be made XHTML strict
+	* Fixed issue #7795: Switching the number of results per page breaks pagebrowser
+
+2010-07-21  Markus Goldbach <markus.godlbach@dkd.de>
+
+	* Changed install script, copy schema.xml and solrconfig.xml from svn and cleanup solr-tomcat directory
+
+2010-07-21  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed the frontend indexer and tx_solr_Search to use tx_solr_ConnectionManager->getConnectionByPageId() to get a Solr connection
+	* Added support for https Solr connections
+	* Added support for the minimum match parameter (mm)
+
+2010-07-20  Markus Goldbach  <markus.goldbach@dkd.de>
+
+	* Changed the default schema.xml for mulitcore and singelcore, the spell field's content is not stored anymore
+
+2010-07-20  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed solrconfig.xml so that spellchecker dictionaries are built on OPTIMIZE
+	* Added spellcheck.collate=true when using spellchecking
+	* Changed the spellcheck form modifier to use the collation suggestions returned by Solr
+	* Added several methods in tx_solr_Query from v2.0-dev
+	* Fixed an issue where sorting and facetting links didn't work out of the box because tx_solr.search.targetPage was not set. Falling back to TSFE->id now.
+	* Fixed issue #4753: Standard page browser CSS is not inserted
+	* Added getter and setter for the link target page id in tx_solr_Query
+	* Fixed issue #7327: Sorting component does not respect target page setting from flexform
+	* Added tx_solr_pi_results->getLinkTargetPageId()
+	* Fixed issue where facetting links didn't respect the target page set by the flexform
+
+2010-07-19  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a missing file indicator.gif for the jQuery autocomplete plugin which caused 404s
+	* Added TYPO3 as a protected word in protwords.txt
+	* Fixed issue #8620: automatic loading of all necessary Javascript for suggestions if activated
+
+2010-07-19  Markus Goldbach <markus.goldbach@dkd.de>
+
+	* Moved Solr schema.xml and solrconfig.xml into EXT:solr/resources/solr/singlecore/
+
+2010-07-16  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed extension status to stable
+
+2010-07-13  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed solrconfig.xml. Minor tweaks for Solr admin and removed unused cache warming queries
+
+2010-07-12  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added loading of TCA in eID suggest script to prevent issues with failing suggestions, credits Markus Kleinhenz
+
+2010-07-09  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added missing styling for the relevance bar view helper
+
+2010-07-02  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Updated the install script to get Solr 1.4.1
+
+2010-06-25  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added Solr icons to the Solr reports in the reports module
+
+2010-06-23  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #8060: Page title defined twice in tx_solr_Indexer, credits Marc Bastian Heinrichs
+	* Added feature #8466: Add a TypoScript view helper
+	* Updated ext_emconf.php
+	* Release of v1.1.0
+
+2010-06-22  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issues #8162 and #8316, usage of deprecated APIs, credits Marc Bastian Heinrichs
+	* Added a COMMIT scheduler task, credits Georg Kuehnberger
+	* Fixed issue #8118: Autosuggest replacement only works when search term is lower case, credits Michael Telgkamp
+	* Changed HTTP method in Solr ping function from HEAD to GET
+	* Fixed issue #8102: Autosuggest JS conflicting with scriptmerger, credits Mario Rimann
+	* Fixed issue #8080: Crop viewhelper doesn't respect html tags, credits Marc Bastian Heinrichs
+	* Fixed issue #8041: Typo in tx_solr_Util causing PHP Warnings in log, credits Marc Bastian Heinrichs
+	* Added caching to tx_solr_Util::getSiteHash()
+
+2010-06-18  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added manual.sxw, providing a general overview of the extension and pointing to the actual documentation in the wiki
+
+2010-06-18 Timo Schmidt <timo.schmidt@aoemedia.de>
+
+	* Applied patch to be able to use noConflict mode, credits Mario Rimann
+
+2010-06-15  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Updated Tomcat / Solr install script
+
+2010-06-02  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #8029: PHP fatal errors in reports module, credits Marc Bastian Heinrichs
+	* Fixed issue #8036: UTF8 chars in search string are not displayed correct in result, credits Marc Bastian Heinrichs
+
+2010-06-01  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #7786: searchForm = advanced fails
+	* Fixed issue #7787: Markup of search results can be semantically optimized
+	* Added a marker ###RESULTS.queryTime#### in the results command to show the query time
+	* Fixed issue #7805: Add French and Italian translation, credits Mario Rimann
+	* Added dutch translation
+	* Fixed issues #5767, #6360, and #7834: Wrong date handling in search result, credits "Thomas" and Michael Knabe
+
+2010-05-31  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed the default schema.xml, adding the preserveOriginal="1" option to all solr.WordDelimiterFilterFactory filters
+	* Fixed issue #7363: Auto Suggest on results page does not work
+	* Fixed an issue where auto suggest would automatically select the first suggestion
+
+2010-05-27  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #7763: Suggest functionality does not take language into account, credits Mario Rimann
+
+2010-05-26  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed issue #7815: Code injection possible in Search field, credits Michael Telgkamp
+	* Improved security by consistently using htmlentities() with ENT_QUOTES option
+
+2010-05-07  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed all places where Solr connections were created to use the new connection manager. The connection manager automatically detects all configured connections when clearing the configuration cache (green flash)
+	* Added a status report to check whether the current schema is installed
+	* Added an index report
+	* Added auto suggest
+
+2010-04-23  Ingo Renner  <ingo.renner@dkd.de>
+
+	* !!! Changed some fields and added a lot of dynamic fields in schema.xml, requires reindexing
+
+2010-04-20  Ingo Renner  <ingo.renner@dkd.de>
+
+	* !!! Changed the format of the page document IDs, requires reindexing
+
+2010-04-19  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed component resolving in the results plugin to process the results list as the last component so that one can build result lists as table where headers can be used to sort the table
+
+2010-04-15  Ingo Renner  <ingo.renner@dkd.de>
+
+	* !!! Added cHash to page document id (breaking change, needs reindexing!), credits Timo Schmidt
+
+2010-04-12  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added support for cObjects in additional field definitions
+
+2010-03-15  Ingo Renner  <ingo.renner@dkd.de>
+
+	* !!! Changed the way the site hash is calculated, requires reindexing
+	* Changed document ID generation to provide page IDs to site hash generation
+
+2010-03-12  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed bug tx_solr_Query::addReturnField does not remove *, credits Timo Schmidt
+
+2010-03-08  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Changed the constructor of tx_solr_SolrService to accept connection parameters instead of always getting them from TSFE
+	* Removed the tx_solr_SolrService from tx_solr_Query, was not used
+	* Fixed building of query URLs by removing the page parameter, previously that parameter could cause trouble when adding a new filter and being on a page that would not exist when the filter is applied, credits Timo Schmidt
+
+2009-10-16  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed a bug with facet values containing commas
+
+2009-09-18  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Added a Status check for Solr server availability
+
+2009-09-16  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Fixed an XSS issue
+	* Bumped version to 1.0.1 after release in TER
+	* Fixed compatibility with EXT:scheduler v1.0.0
+
+2009-09-15  Ingo Renner  <ingo.renner@dkd.de>
+
+	* Initial Public Release of the community version
